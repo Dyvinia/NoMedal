@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -49,7 +50,10 @@ namespace NoMedal {
                 MessageBoxDialog.Show("Cannot locate Medal", AppName, MessageBoxButton.OK, DialogSound.Error);
                 Current.Shutdown();
             }
-                
+
+            foreach (Process existingProcess in Process.GetProcessesByName("NoMedal"))
+                if (existingProcess.Id != Environment.ProcessId)
+                    existingProcess.Kill();
         }
     }
 }
