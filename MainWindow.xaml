@@ -5,8 +5,118 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NoMedal"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="NoMedal" Icon="/Resources/Icon.ico"
+        Width="600" SizeToContent="Height" UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource CustomWindowStyle}" ResizeMode="CanMinimize">
     <Grid>
+        <Grid Background="#FF141414" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
+            <StackPanel Orientation="Vertical" Margin="15">
+
+                <Grid>
+                    <TextBlock TextWrapping="Wrap" Text="Programs" Foreground="#FFF1F1F1" FontSize="14" Height="20" FontWeight="Bold" VerticalAlignment="Top"/>
+
+                    <Button x:Name="AddButton" Click="AddButton_Click" Background="Transparent" Margin="0 0 0 0" ToolTip="Add Program" Height="16" HorizontalAlignment="Right">
+                        <Image Source="/Resources/add.png"/>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="0.6"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Opacity" Value="0.4"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.4"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+
+                <ListBox x:Name="ProgramListBox" Height="250">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ToolTip="{Binding Path}" Margin="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="2"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0" Height="24" Width="24">
+                                    <Image Source="{Binding Icon}" Margin="1" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Grid>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4 0 0 0" VerticalAlignment="Center" TextWrapping="NoWrap" />
+                                
+                                <ComboBox Grid.Column="2" x:Name="ActionComboBox" Width="91" SelectedIndex="{Binding Action}">
+                                    <ComboBoxItem Content="Close Medal"/>
+                                    <ComboBoxItem Content="Open Medal"/>
+                                </ComboBox>
+
+                                <Button Grid.Column="4" x:Name="DeleteButton" Click="DeleteButton_Click" Background="Transparent" Margin="0 0 0 0" ToolTip="Delete Program" Height="16" HorizontalAlignment="Right">
+                                    <Image Source="/Resources/delete.png"/>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Opacity" Value="0.6"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Opacity" Value="0.4"/>
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Opacity" Value="0.4"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <StackPanel>
+                                            <ContentPresenter/>
+                                            <Separator x:Name="Separator"/>
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+            
+
+            
+        </Grid>
     </Grid>
 </Window>
