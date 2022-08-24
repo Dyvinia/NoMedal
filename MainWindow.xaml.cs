@@ -77,6 +77,9 @@ namespace NoMedal {
             Programs.Clear();
             foreach (ProgramConfig pConfig in Config.Settings.Programs) {
                 string name = FileVersionInfo.GetVersionInfo(pConfig.Path).ProductName;
+                if (String.IsNullOrEmpty(name))
+                    name = Path.GetFileNameWithoutExtension(pConfig.Path);
+
                 ImageSource iconImage = Icon;
                 try {
                     Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(pConfig.Path);
