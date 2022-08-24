@@ -4070,7 +4070,7 @@
 
                                         <!-- CUSTOM ICON -->
 
-                                        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2" Height="24" Source="pack://application:,,,/Resources/Icon.ico" />
+                                        <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4 2 2 2" Height="24" Source="pack://application:,,,/Resources/Icon.ico" />
 
                                         <!-- CUSTOM ICON END -->
 
