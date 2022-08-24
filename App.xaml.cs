@@ -14,14 +14,9 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace NoMedal {
-    public class ProgramConfig {
-        public string Path { get; set; }
-        public int Action { get; set; } = 0;
-    }
 
     public class Config : SettingsManager<Config> {
-        public bool LaunchGame { get; set; } = false;
-        public List<ProgramConfig> Programs { get; set; } = new();
+        public List<string> Programs { get; set; } = new();
     }
 
     /// <summary>

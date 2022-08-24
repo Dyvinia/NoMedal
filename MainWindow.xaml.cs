@@ -25,12 +25,12 @@ namespace NoMedal {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
         public class Program {
             public string Name { get; set; }
             public ImageSource Icon { get; set; }
 
             public string Path { get; set; }
-            public int Action { get; set; } = 0;
         }
         public ObservableCollection<Program> Programs = new();
 
@@ -75,21 +75,21 @@ namespace NoMedal {
 
         public void LoadProgramsConfig() {
             Programs.Clear();
-            foreach (ProgramConfig pConfig in Config.Settings.Programs) {
-                string name = FileVersionInfo.GetVersionInfo(pConfig.Path).ProductName;
+            foreach (string pConfig in Config.Settings.Programs) {
+                string name = FileVersionInfo.GetVersionInfo(pConfig).ProductName;
                 if (String.IsNullOrEmpty(name))
-                    name = Path.GetFileNameWithoutExtension(pConfig.Path);
+                    name = Path.GetFileNameWithoutExtension(pConfig);
 
                 ImageSource iconImage = Icon;
                 try {
-                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(pConfig.Path);
+                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(pConfig);
                     iconImage = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 }
                 catch {
                     
                 }
 
-                Program program = new() { Name = name, Icon = iconImage, Path = pConfig.Path, Action = pConfig.Action };
+                Program program = new() { Name = name, Icon = iconImage, Path = pConfig };
                 Programs.Add(program);
             }
         }
@@ -128,8 +128,8 @@ namespace NoMedal {
                 FilterIndex = 2
             };
             if (dialog.ShowDialog() == true) {
-                if (!Config.Settings.Programs.Any(p => p.Path == dialog.FileName)) {
-                    Config.Settings.Programs.Add(new ProgramConfig() { Path = dialog.FileName, Action = 0 });
+                if (!Config.Settings.Programs.Any(p => p == dialog.FileName)) {
+                    Config.Settings.Programs.Add(dialog.FileName);
                     Config.Save();
                     LoadProgramsConfig();
                 }
@@ -148,7 +148,7 @@ namespace NoMedal {
 
             MessageBoxResult result = MessageBoxDialog.Show("Remove Program from NoMedal?", App.AppName, MessageBoxButton.YesNo, DialogSound.Notify);
             if (result == MessageBoxResult.Yes) {
-                ProgramConfig pConfig = Config.Settings.Programs.Find(p => p.Path == program.Path);
+                string pConfig = Config.Settings.Programs.Find(p => p == program.Path);
                 Config.Settings.Programs.Remove(pConfig);
                 Config.Save();
                 LoadProgramsConfig();
