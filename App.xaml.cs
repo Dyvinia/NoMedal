@@ -45,8 +45,11 @@ namespace NoMedal {
         protected override void OnStartup(StartupEventArgs e) {
             new MainWindow().Show();
 
-            if (!MedalPath.Exists)
+            if (!MedalPath.Exists) {
                 MessageBoxDialog.Show("Cannot locate Medal", AppName, MessageBoxButton.OK, DialogSound.Error);
+                Current.Shutdown();
+            }
+                
         }
     }
 }

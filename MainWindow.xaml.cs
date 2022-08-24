@@ -36,7 +36,9 @@ namespace NoMedal {
         public MainWindow() {
             InitializeComponent();
 
+            MouseDown += (s, e) => FocusManager.SetFocusedElement(this, this);
             ProgramListBox.ItemsSource = Programs;
+
             LoadProgramsConfig();
 
             Thread checkThread = new(CheckThread) { IsBackground = true };
@@ -60,7 +62,6 @@ namespace NoMedal {
                 Programs.Add(program);
             }
         }
-
         
         public void CheckThread() {
             while (true) {
@@ -87,13 +88,6 @@ namespace NoMedal {
                 }
                 else Thread.Sleep(5000);
             }
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e) {
-            base.OnKeyDown(e);
-
-            if (e.Key == Key.F12)
-                Process.Start("explorer.exe", $"/select, {Config.FilePath}");
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e) {
@@ -128,6 +122,13 @@ namespace NoMedal {
                 Config.Save();
                 LoadProgramsConfig();
             }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e) {
+            base.OnKeyDown(e);
+
+            if (e.Key == Key.F12)
+                Process.Start("explorer.exe", $"/select, {Config.FilePath}");
         }
     }
 }

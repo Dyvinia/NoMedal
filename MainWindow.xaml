@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NoMedal"
         mc:Ignorable="d"
         Title="NoMedal" Icon="/Resources/Icon.ico"
-        Width="600" SizeToContent="Height" UseLayoutRounding="True"
+        Width="400" SizeToContent="Height" UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource CustomWindowStyle}" ResizeMode="CanMinimize">
     <Grid>
@@ -54,7 +54,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="0"/>
                                     <ColumnDefinition Width="4"/>
                                     <ColumnDefinition Width="16"/>
                                     <ColumnDefinition Width="2"/>
