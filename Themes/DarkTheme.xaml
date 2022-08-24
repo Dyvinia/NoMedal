@@ -1659,7 +1659,7 @@
 
     <!-- Menus -->
     <Style TargetType="{x:Type ContextMenu}">
-        <Setter Property="Background" Value="{StaticResource ControlDefaultBackground}"/>
+        <Setter Property="Background" Value="{StaticResource ContainerGridBackground}"/>
         <Setter Property="Foreground" Value="{StaticResource ControlDefaultForeground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ControlDefaultBorderBrush}"/>
         <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -1673,9 +1673,9 @@
                                                    Themes:SystemDropShadowChrome.Color="Transparent" 
                                                    Themes:SystemDropShadowChrome.CornerRadius="0" 
                                                    SnapsToDevicePixels="True">
-                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2">
-                            <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Hidden">
-                                <ItemsPresenter />
+                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" >
+                            <ScrollViewer x:Name="ScrollViewer" VerticalScrollBarVisibility="Hidden" >
+                                <ItemsPresenter/>
                             </ScrollViewer>
                         </Border>
                     </Themes:SystemDropShadowChrome>
@@ -1724,7 +1724,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <Grid x:Name="Grid" VerticalAlignment="Center">
+                        <Grid x:Name="Grid" VerticalAlignment="Center" Margin="16 4 16 4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>

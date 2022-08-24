@@ -1,4 +1,5 @@
 ﻿using DyviniaUtils.Dialogs;
+using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -36,13 +37,40 @@ namespace NoMedal {
         public MainWindow() {
             InitializeComponent();
 
-            MouseDown += (s, e) => FocusManager.SetFocusedElement(this, this);
+            MouseDown += (_, _) => FocusManager.SetFocusedElement(this, this);
+            StateChanged += (_, _) => {
+                if (WindowState == WindowState.Minimized)
+                    Hide();
+            };
             ProgramListBox.ItemsSource = Programs;
 
+            SetupContextMenu();
             LoadProgramsConfig();
 
             Thread checkThread = new(CheckThread) { IsBackground = true };
             checkThread.Start();
+        }
+
+        private void SetupContextMenu() {
+            TaskbarIcon tbi = new() {
+                IconSource = Icon,
+                ToolTipText = "NoMedal",
+                MenuActivation = PopupActivationMode.LeftOrRightClick
+            };
+            ContextMenu contextMenu = new();
+            MenuItem menuShow = new() { Header = "Show NoMedal" };
+            MenuItem menuExit = new() { Header = "Exit NoMedal" };
+            menuShow.Click += (_, _) => {
+                Show();
+                WindowState = WindowState.Normal;
+            };
+            menuExit.Click += (_, _) => {
+                Application.Current.Shutdown();
+            };
+
+            contextMenu.Items.Add(menuShow);
+            contextMenu.Items.Add(menuExit);
+            tbi.ContextMenu = contextMenu;
         }
 
         public void LoadProgramsConfig() {
