@@ -61,7 +61,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Grid Grid.Column="0" Height="24" Width="24">
-                                    <Image Source="{Binding Icon}" Margin="1" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                    <Image Source="{Binding Icon}" RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Grid>
                                 <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="4 0 0 0" VerticalAlignment="Center" TextWrapping="NoWrap" />
                                 
