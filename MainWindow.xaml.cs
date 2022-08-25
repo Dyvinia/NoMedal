@@ -52,13 +52,31 @@ namespace NoMedal {
         }
         public ObservableCollection<Program> Programs = new();
 
+        public TaskbarIcon TrayIcon = new() {
+            ToolTipText = "NoMedal",
+            MenuActivation = PopupActivationMode.LeftOrRightClick
+        };
+
+        public void ShowNotification(string message) {
+            if (Config.Settings.ShowNotifications)
+                TrayIcon.ShowBalloonTip(null, message, BalloonIcon.None);
+        }
+
+        public void ShowNotification(string title, string message, Program program) {
+            if (Config.Settings.ShowNotifications)
+                TrayIcon.ShowBalloonTip(title, message, System.Drawing.Icon.ExtractAssociatedIcon(program.Path), true);
+        }
+
+
         public MainWindow() {
             InitializeComponent();
 
             MouseDown += (_, _) => FocusManager.SetFocusedElement(this, this);
             StateChanged += (_, _) => {
-                if (WindowState == WindowState.Minimized)
+                if (WindowState == WindowState.Minimized) {
                     Hide();
+                    ShowNotification("Minimized to Tray");
+                }
             };
             ProgramListBox.ItemsSource = Programs;
 
@@ -70,11 +88,7 @@ namespace NoMedal {
         }
 
         private void SetupContextMenu() {
-            TaskbarIcon tbi = new() {
-                IconSource = Icon,
-                ToolTipText = "NoMedal",
-                MenuActivation = PopupActivationMode.LeftOrRightClick
-            };
+            TrayIcon.IconSource = Icon;
             ContextMenu contextMenu = new();
             MenuItem menuShow = new() { Header = "Show NoMedal" };
             MenuItem menuExit = new() { Header = "Exit NoMedal" };
@@ -88,7 +102,7 @@ namespace NoMedal {
 
             contextMenu.Items.Add(menuShow);
             contextMenu.Items.Add(menuExit);
-            tbi.ContextMenu = contextMenu;
+            TrayIcon.ContextMenu = contextMenu;
         }
 
         public void RefreshPrograms() {
@@ -104,10 +118,13 @@ namespace NoMedal {
                 if (processes.Length != 0) {
                     try {
                         foreach (Process process in processes) {
+                            Program program = Programs.Where(p => Path.GetFileNameWithoutExtension(p.Path) == process.ProcessName).FirstOrDefault();
+                            ShowNotification("Closing Medal", $"{program.Name} Started.", program);
                             foreach (Process medalProcess in Process.GetProcessesByName("Medal"))
                                 medalProcess.Kill();
                             process.WaitForExit();
 
+                            ShowNotification("Starting Medal");
                             Process medal = new();
                             medal.StartInfo.FileName = App.MedalPath.FullName;
                             medal.StartInfo.WorkingDirectory = App.MedalPath.DirectoryName;

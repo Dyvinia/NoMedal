@@ -17,6 +17,7 @@ namespace NoMedal {
 
     public class Config : SettingsManager<Config> {
         public bool UpdateChecker { get; set; } = true;
+        public bool ShowNotifications { get; set; } = true;
 
         public List<string> Programs { get; set; } = new();
     }
