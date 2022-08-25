@@ -29,8 +29,26 @@ namespace NoMedal {
         public class Program {
             public string Name { get; set; }
             public ImageSource Icon { get; set; }
-
             public string Path { get; set; }
+
+            public Program(string path) {
+                string name = FileVersionInfo.GetVersionInfo(path).ProductName;
+                if (String.IsNullOrEmpty(name))
+                    name = System.IO.Path.GetFileNameWithoutExtension(path);
+
+                ImageSource iconImage = Icon;
+                try {
+                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(path);
+                    iconImage = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                }
+                catch {
+
+                }
+
+                Name = name;
+                Icon = iconImage;
+                Path = path;
+            }
         }
         public ObservableCollection<Program> Programs = new();
 
@@ -45,7 +63,7 @@ namespace NoMedal {
             ProgramListBox.ItemsSource = Programs;
 
             SetupContextMenu();
-            LoadProgramsConfig();
+            RefreshPrograms();
 
             Thread checkThread = new(CheckThread) { IsBackground = true };
             checkThread.Start();
@@ -73,27 +91,12 @@ namespace NoMedal {
             tbi.ContextMenu = contextMenu;
         }
 
-        public void LoadProgramsConfig() {
+        public void RefreshPrograms() {
             Programs.Clear();
-            foreach (string pConfig in Config.Settings.Programs) {
-                string name = FileVersionInfo.GetVersionInfo(pConfig).ProductName;
-                if (String.IsNullOrEmpty(name))
-                    name = Path.GetFileNameWithoutExtension(pConfig);
-
-                ImageSource iconImage = Icon;
-                try {
-                    Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(pConfig);
-                    iconImage = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                }
-                catch {
-                    
-                }
-
-                Program program = new() { Name = name, Icon = iconImage, Path = pConfig };
-                Programs.Add(program);
-            }
+            foreach (string path in Config.Settings.Programs)
+                Programs.Add(new Program(path));
         }
-        
+
         public void CheckThread() {
             while (true) {
                 Process[] processes = Programs.SelectMany(p => Process.GetProcessesByName(Path.GetFileNameWithoutExtension(p.Path))).ToArray();
@@ -131,7 +134,7 @@ namespace NoMedal {
                 if (!Config.Settings.Programs.Any(p => p == dialog.FileName)) {
                     Config.Settings.Programs.Add(dialog.FileName);
                     Config.Save();
-                    LoadProgramsConfig();
+                    RefreshPrograms();
                 }
                 else {
                     MessageBoxDialog.Show("Program already exists", App.AppName, MessageBoxButton.OK, DialogSound.Error);
@@ -151,7 +154,7 @@ namespace NoMedal {
                 string pConfig = Config.Settings.Programs.Find(p => p == program.Path);
                 Config.Settings.Programs.Remove(pConfig);
                 Config.Save();
-                LoadProgramsConfig();
+                RefreshPrograms();
             }
         }
 
