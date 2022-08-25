@@ -16,6 +16,8 @@ using System.Windows;
 namespace NoMedal {
 
     public class Config : SettingsManager<Config> {
+        public bool UpdateChecker { get; set; } = true;
+
         public List<string> Programs { get; set; } = new();
     }
 
@@ -40,6 +42,9 @@ namespace NoMedal {
 
         protected override void OnStartup(StartupEventArgs e) {
             new MainWindow().Show();
+
+            if (Config.Settings.UpdateChecker)
+                GitHub.CheckVersion("Dyvinia", "NoMedal");
 
             if (!MedalPath.Exists) {
                 MessageBoxDialog.Show("Cannot locate Medal", AppName, MessageBoxButton.OK, DialogSound.Error);
