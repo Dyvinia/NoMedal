@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NoMedal"
         mc:Ignorable="d"
         Title="NoMedal" Icon="/Resources/Icon.ico"
-        Width="400" SizeToContent="Height" UseLayoutRounding="True"
+        Width="350" SizeToContent="Height" UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource CustomWindowStyle}" ResizeMode="CanMinimize">
     <Grid>
