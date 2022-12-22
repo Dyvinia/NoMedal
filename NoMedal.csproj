@@ -2,12 +2,12 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net7.0-windows</TargetFramework>
 		<Nullable>disable</Nullable>
 		<UseWPF>true</UseWPF>
 
 		<AssemblyName>NoMedal</AssemblyName>
-		<Version>1.1.0</Version>
+		<Version>1.1.1</Version>
 		<Copyright>Copyright © 2022 Dyvinia</Copyright>
 		<Company>Dyvinia</Company>
 		<ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
@@ -19,6 +19,18 @@
 		<None Remove="Resources\add.png" />
 		<None Remove="Resources\delete.png" />
 		<None Remove="Resources\Icon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <COMReference Include="IWshRuntimeLibrary">
+	    <WrapperTool>tlbimp</WrapperTool>
+	    <VersionMinor>0</VersionMinor>
+	    <VersionMajor>1</VersionMajor>
+	    <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+	    <Lcid>0</Lcid>
+	    <Isolated>false</Isolated>
+	    <EmbedInteropTypes>true</EmbedInteropTypes>
+	  </COMReference>
 	</ItemGroup>
 
 	<ItemGroup>

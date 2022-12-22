@@ -2,19 +2,15 @@
 using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -78,6 +74,11 @@ namespace NoMedal {
                     ShowNotification("Minimized to Tray");
                 }
             };
+
+            CheckForStartup();
+            StartupCheckBox.Checked += (_, _) => StartOnStartup();
+            StartupCheckBox.Unchecked += (_, _) => File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "NoMedal.lnk"));
+
             ProgramListBox.ItemsSource = Programs;
 
             SetupContextMenu();
@@ -175,11 +176,28 @@ namespace NoMedal {
             }
         }
 
+        private void StartOnStartup() {
+            IWshRuntimeLibrary.WshShell wshShell = new();
+            IWshRuntimeLibrary.IWshShortcut shortcut = wshShell.CreateShortcut(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "NoMedal.lnk"));
+            shortcut.TargetPath = Environment.ProcessPath;
+            shortcut.WorkingDirectory = Environment.CurrentDirectory;
+            shortcut.Save();
+        }
+
+        private void CheckForStartup() {
+            if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Startup), "NoMedal.lnk"))) {
+                StartupCheckBox.IsChecked = true;
+            }
+        }
+
         protected override void OnKeyDown(KeyEventArgs e) {
             base.OnKeyDown(e);
 
             if (e.Key == Key.F12)
                 Process.Start("explorer.exe", $"/select, {Config.FilePath}");
+
+            if (e.Key == Key.F1)
+                StartOnStartup();
         }
     }
 }

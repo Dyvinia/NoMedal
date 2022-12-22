@@ -113,6 +113,8 @@
                         </Style>
                     </ListBox.ItemContainerStyle>
                 </ListBox>
+
+                <CheckBox x:Name="StartupCheckBox" Margin="0 5 0 0" Content="Start NoMedal on Startup" IsChecked="False"/>
             </StackPanel>
             
 
