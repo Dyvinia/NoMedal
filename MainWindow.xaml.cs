@@ -129,6 +129,7 @@ namespace NoMedal {
                             Process medal = new();
                             medal.StartInfo.FileName = App.MedalPath.FullName;
                             medal.StartInfo.WorkingDirectory = App.MedalPath.DirectoryName;
+                            medal.StartInfo.UseShellExecute = true;
                             medal.Start();
                         }
                     }
